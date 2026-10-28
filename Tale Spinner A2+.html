@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tale Spinner A2+</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap">
+<style>
+:root{--bg:#FFF6EE;--ink:#3B2F4A;--card:#FFFFFF;--line:#EADCF0;--accent:#FF9EB5;--soft:#7C6D8C;--on:#3B2F4A;
+--s:#BFD9FF;--c:#BDEBD0;--p:#FFD8B5;--q:#DCCBFF;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2A2236;--ink:#F6EEFF;--card:#382D48;--line:#54456B;--accent:#FF9EB5;--soft:#C5B6D8;--on:#2A2236;--s:#5C86C8;--c:#4C9E72;--p:#C98A52;--q:#8E6BC8}}
+:root[data-theme="dark"]{--bg:#2A2236;--ink:#F6EEFF;--card:#382D48;--line:#54456B;--accent:#FF9EB5;--soft:#C5B6D8;--on:#2A2236;--s:#5C86C8;--c:#4C9E72;--p:#C98A52;--q:#8E6BC8}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.55 Nunito,system-ui,sans-serif}
+main{max-width:900px;margin:0 auto;padding:18px 16px 60px}
+header{text-align:center;margin-bottom:14px}
+h1{font:800 clamp(34px,8vw,58px)/1 "Baloo 2",system-ui,sans-serif;margin:6px 0;color:var(--ink)}
+h1 span{background:var(--accent);padding:0 12px;border-radius:16px;color:#3B2F4A}
+.sub{color:var(--soft);margin:0}
+nav{display:flex;gap:8px;justify-content:center;margin:16px 0 20px}
+.tab{font:800 18px "Baloo 2",sans-serif;border:0;border-radius:99px;padding:10px 26px;background:var(--line);color:var(--ink);cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--accent);color:#3B2F4A}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.leg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.tag{font:700 14px Nunito,sans-serif;border-radius:10px;padding:4px 12px;color:var(--on)}
+.s{background:var(--s)}.c{background:var(--c)}.p{background:var(--p)}.q{background:var(--q)}
+.tag{color:#3B2F4A}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.pick{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:18px;padding:12px 8px;cursor:pointer;font:700 15px Nunito,sans-serif;text-align:center}
+.pick em{display:block;font-style:normal;font-size:30px}
+.pick[aria-pressed="true"]{border-color:var(--accent);background:var(--line)}
+.card{background:var(--card);border-radius:24px;padding:22px;box-shadow:0 6px 0 var(--line);margin-bottom:20px}
+.story{font-size:21px;line-height:2.1}
+.story b{font-weight:700;border-radius:8px;padding:2px 6px;cursor:pointer;color:var(--ink)}
+.story.off b{background:transparent;box-shadow:inset 0 -3px 0 var(--line)}
+.story.off b.hit.s{background:var(--s)}.story.off b.hit.c{background:var(--c)}.story.off b.hit.p{background:var(--p)}.story.off b.hit.q{background:var(--q)}
+.story b.s{background:var(--s)}.story b.c{background:var(--c)}.story b.p{background:var(--p)}.story b.q{background:var(--q)}
+.story.off b{background:transparent!important}
+.story.off b.hit.s{background:var(--s)!important}.story.off b.hit.c{background:var(--c)!important}.story.off b.hit.p{background:var(--p)!important}.story.off b.hit.q{background:var(--q)!important}
+.tip{min-height:2em;margin-top:6px;font-weight:700}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.btn{font:800 17px "Baloo 2",sans-serif;border:0;border-radius:14px;padding:10px 18px;background:var(--line);color:var(--ink);cursor:pointer}
+.btn.go{background:var(--accent);color:#3B2F4A}
+.btn[disabled]{opacity:.4;cursor:default}
+.time{font:800 28px "Baloo 2",sans-serif;min-height:1.3em}
+.qa{display:grid;gap:8px;margin-top:10px}
+.qa div{background:var(--bg);border-radius:12px;padding:8px 14px;cursor:pointer}
+.qa span{display:none;font-weight:700;color:var(--soft)}
+.qa .open span{display:block}
+.play{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:720px){.play{grid-template-columns:1.6fr 1fr}}
+.cat{font-weight:700;color:var(--soft);min-height:1.6em}
+.prompt{font:800 clamp(24px,5vw,34px)/1.25 "Baloo 2",sans-serif;min-height:4em;margin:4px 0 12px}
+.bar{height:16px;border-radius:9px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--c);transform-origin:left}
+.bar.low i{background:var(--accent)}
+.lives{font-size:30px;letter-spacing:4px}
+.score{font:800 20px "Baloo 2",sans-serif;color:var(--soft)}
+.side{display:flex;flex-direction:column;gap:10px}
+.side .btn{width:100%}
+.ans{margin-top:8px;font-weight:700;min-height:1.6em}
+.ans span{border-radius:8px;padding:2px 8px;color:#3B2F4A}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1><span>Tale</span> Spinner</h1>
+<p class="sub">Speaking A2+ · Mixed past forms</p>
+</header>
+<nav><button class="tab" id="t1" aria-pressed="true">📖 Read</button><button class="tab" id="t2" aria-pressed="false">🎡 Play</button></nav>
+<div class="leg"><span class="tag s">Past simple</span><span class="tag c">Past continuous</span><span class="tag p">Past perfect</span><span class="tag q">Past perfect cont.</span></div>
+
+<section id="v1">
+<div class="grid" id="stories"></div>
+<div class="card">
+<div class="story" id="story"></div>
+<div class="tip" id="tip">Toca una frase 👆</div>
+<div class="btns">
+<button class="btn" id="tog">🎨 Apagar colores</button>
+<button class="btn go" id="rt">⏱ Leer en voz alta (60 s)</button>
+</div>
+<div class="time" id="rtime"></div>
+<div class="qa" id="qa"></div>
+</div>
+</section>
+
+<section id="v2" hidden>
+<div class="play">
+<div class="card" aria-live="polite">
+<div class="cat" id="cat">Pulsa Spin.</div>
+<div class="prompt" id="prompt">Ready?</div>
+<div class="bar" id="bar"><i id="fill"></i></div>
+<div class="time" id="time"></div>
+<div class="ans" id="ans"></div>
+</div>
+<div class="card side">
+<div class="lives" id="lives" aria-label="Vidas"></div>
+<div class="score" id="score"></div>
+<button class="btn go" id="spin">🎡 Spin</button>
+<button class="btn" id="reveal" disabled>👀 Respuesta</button>
+<button class="btn" id="ok" disabled>✔ Correcto</button>
+<button class="btn" id="no" disabled>✖ Fallo</button>
+<button class="btn" id="reset">↺ Reiniciar</button>
+</div>
+</div>
+</section>
+</main>
+
+<script>
+var ST=[
+{e:"👛",n:"The lost wallet",t:"Last Friday, {c:I was walking} home when {s:I saw} a wallet on the street. It {c:was raining}. {s:I picked} it up. Somebody {p:had dropped} it, and the name on the card was Laura. {s:I called} her right away. She {q:had been looking} for it for two hours! In the end, we {s:met} at a café.",qa:[["Who had lost the wallet?","Laura."],["How long had she been looking for it?","For two hours."]]},
+{e:"✈️",n:"The missed flight",t:"When {s:I arrived} at the airport, it {c:was snowing}. I {p:had forgotten} my passport at home! {s:I ran} back, but the plane {p:had left}. My sister {q:had been waiting} for me for three hours. She {s:laughed} in the end.",qa:[["What had the narrator forgotten?","The passport."],["How long had the sister been waiting?","Three hours."]]},
+{e:"🎉",n:"The surprise party",t:"I {c:was working} at home when the doorbell {s:rang}. I {s:opened} the door and everybody {s:shouted} my name! My friends {q:had been preparing} the party for two weeks, and they {p:had bought} a huge cake. We {c:were dancing} until midnight. In the end, I {s:ended} up laughing.",qa:[["How long had they been preparing?","Two weeks."],["What had they bought?","A huge cake."]]},
+{e:"💼",n:"First day at work",t:"It {c:was raining} when {s:I arrived} at the office. I {s:felt} embarrassed because I {p:had forgotten} my ID card. My boss {s:smiled}. She {q:had been waiting} for me since eight. By the time I {s:got} inside, the meeting {p:had started}.",qa:[["Why was the narrator embarrassed?","Forgot the ID card."],["Since when had the boss been waiting?","Since eight."]]},
+{e:"🐶",n:"The lost dog",t:"Yesterday I {c:was walking} in the park when {s:I heard} a strange noise. A small dog {c:was hiding} under a bench. He {p:had lost} his owner, and he {c:was shaking} with fear. {s:I gave} him some water. An hour later, a boy {s:arrived}. He {q:had been looking} for the dog all afternoon!",qa:[["Where was the dog hiding?","Under a bench."],["How long had the boy been looking?","All afternoon."]]},
+{e:"📝",n:"The big exam",t:"I {s:woke} up late on exam day. I {q:had been studying} until 3 a.m., so I {c:was sleeping} when my alarm {s:rang}. By the time I {s:arrived}, the teacher {p:had given} the papers. I {s:felt} nervous, but I {s:did} my best. It {s:turned} out well: I {s:passed}!",qa:[["Why was the narrator late?","Studied until 3 a.m."],["What had the teacher done?","Given the papers."]]}
+];
+var N={s:"Past simple",c:"Past continuous",p:"Past perfect",q:"Past perfect continuous"};
+var cur=0,off=false;
+function $(i){return document.getElementById(i)}
+function show(){
+ $("story").innerHTML=ST[cur].t.replace(/\{([scpq]):([^}]+)\}/g,'<b class="$1" data-k="$1">$2</b>');
+ $("story").className="story"+(off?" off":"");
+ $("tip").textContent="Toca una frase 👆";
+ $("qa").innerHTML=ST[cur].qa.map(function(x){return"<div>❓ "+x[0]+"<span>"+x[1]+"</span></div>"}).join("");
+ [].forEach.call($("qa").children,function(d){d.onclick=function(){d.classList.toggle("open")}});
+ [].forEach.call($("story").querySelectorAll("b"),function(b){b.onclick=function(){b.classList.add("hit");$("tip").innerHTML='<span class="tag '+b.dataset.k+'">'+N[b.dataset.k]+'</span>'}});
+}
+ST.forEach(function(s,i){var b=document.createElement("button");b.className="pick";b.innerHTML="<em>"+s.e+"</em>"+s.n;b.setAttribute("aria-pressed",i===0);b.onclick=function(){cur=i;[].forEach.call($("stories").children,function(c){c.setAttribute("aria-pressed",c===b)});show()};$("stories").appendChild(b)});
+$("tog").onclick=function(){off=!off;$("tog").textContent=off?"🎨 Encender colores":"🎨 Apagar colores";$("story").classList.toggle("off",off)};
+var rt=null;
+$("rt").onclick=function(){clearInterval(rt);var t0=Date.now();rt=setInterval(function(){var l=Math.max(0,60-(Date.now()-t0)/1000);$("rtime").textContent=l>0?Math.ceil(l)+" s":"TIME’S UP! 👏";if(l<=0)clearInterval(rt)},200)};
+function tab(n){$("v1").hidden=n!==1;$("v2").hidden=n!==2;$("t1").setAttribute("aria-pressed",n===1);$("t2").setAttribute("aria-pressed",n===2)}
+$("t1").onclick=function(){tab(1)};$("t2").onclick=function(){tab(2)};
+show();
+
+var R=[
+{c:"Color Hunt",p:"Which tense? <b>“I had lost my keys.”</b>",a:"Past perfect (had + V3)",t:8,k:"p"},
+{c:"Color Hunt",p:"Which tense? <b>“She was dancing.”</b>",a:"Past continuous (was + -ing)",t:8,k:"c"},
+{c:"Color Hunt",p:"Which tense? <b>“They had been waiting for an hour.”</b>",a:"Past perfect continuous",t:8,k:"q"},
+{c:"Color Hunt",p:"Which tense? <b>“We met at a café.”</b>",a:"Past simple",t:8,k:"s"},
+{c:"Transform",p:"Say it in <b>past continuous</b>: “I walked to school.”",a:"I was walking to school.",t:10,k:"c"},
+{c:"Transform",p:"Say it in <b>past perfect</b>: “I forgot my phone.”",a:"I had forgotten my phone.",t:10,k:"p"},
+{c:"Transform",p:"Say it in <b>past perfect continuous</b>: “He studied all night.”",a:"He had been studying all night.",t:12,k:"q"},
+{c:"Lightning",p:"When I arrived, the movie <b>___</b> (start).",a:"had started",t:8,k:"p"},
+{c:"Lightning",p:"While I <b>___</b> (cook), the phone rang.",a:"was cooking",t:8,k:"c"},
+{c:"Lightning",p:"She was tired. She <b>___</b> (work) for ten hours.",a:"had been working",t:8,k:"q"},
+{c:"Story Starter",p:"Continue: <b>“It was raining and I was waiting for the bus when…”</b>",a:"Example: …I saw an old friend. We hadn’t seen each other for years.",t:25,k:"s"},
+{c:"Story Starter",p:"Continue: <b>“I felt nervous because I had…”</b>",a:"Example: …forgotten my notes. Suddenly, the teacher called my name.",t:25,k:"p"},
+{c:"My Life",p:"Tell me what you <b>were doing</b> yesterday at 8 p.m.",a:"I was watching TV / cooking / studying…",t:15,k:"c"},
+{c:"My Life",p:"Say <b>2 things you had done</b> before class today.",a:"I had eaten breakfast. I had checked my phone.",t:20,k:"p"},
+{c:"My Life",p:"Say how long you <b>had been</b> studying/working when your last class started.",a:"I had been studying for two hours.",t:15,k:"q"},
+{c:"Mini Story",p:"Tell a 4-sentence story: <b>background + event + before + ending</b>.",a:"was -ing · suddenly + past simple · had + V3 · in the end.",t:40,k:"s"}
+];
+var F=["Do <b>5 jumping jacks</b> and count in English.","<b>Spell</b> your full name in English.","Say the <b>alphabet</b> from A to Z.","Tell a story with <b>only 3 sentences</b> in 15 seconds!","Ask the class <b>3 questions</b> in the past."];
+var lives=3,score=0,timer=null,item=null;
+function fmt(s){return s<=10?s.toFixed(1):Math.ceil(s)+""}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function hud(){var h="";for(var i=0;i<3;i++)h+=i<lives?"💖":"🤍";$("lives").textContent=h;$("score").textContent="Puntos: "+score}
+function stop(){clearInterval(timer);timer=null}
+function lock(v){$("ok").disabled=v;$("no").disabled=v;$("reveal").disabled=v}
+function start(sec){stop();var t0=Date.now(),f=$("fill"),bar=$("bar");bar.className="bar";f.style.transform="scaleX(1)";$("time").textContent=fmt(sec);
+ timer=setInterval(function(){var l=Math.max(0,sec-(Date.now()-t0)/1000);f.style.transform="scaleX("+(l/sec)+")";$("time").textContent=fmt(l);if(l<(sec>10?8:3))bar.className="bar low";if(l<=0){stop();$("time").textContent="TIME’S UP!"}},50)}
+$("spin").onclick=function(){if(lives<1)return;item=pick(R);$("ans").textContent="";$("cat").textContent=item.c;$("prompt").innerHTML=item.p;lock(false);start(item.t)};
+$("reveal").onclick=function(){if(item)$("ans").innerHTML='<span class="'+item.k+'">'+item.a+'</span>'};
+$("ok").onclick=function(){stop();score++;hud();lock(true);$("time").textContent="✔ Nice!"};
+$("no").onclick=function(){stop();lives--;hud();lock(true);
+ if(lives<1){$("cat").textContent="Game over · Forfeit:";$("prompt").innerHTML=pick(F);$("fill").style.transform="scaleX(0)";$("time").textContent=""}else $("time").textContent="💥 -1 vida"};
+$("reset").onclick=function(){stop();lives=3;score=0;hud();lock(true);$("cat").textContent="Pulsa Spin.";$("prompt").textContent="Ready?";$("time").textContent="";$("ans").textContent="";$("fill").style.transform="scaleX(1)"};
+hud();
+</script>
+</body>
+</html>
